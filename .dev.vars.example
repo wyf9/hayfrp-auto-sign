@@ -1,0 +1,2 @@
+WEBHOOK_URL=disabled # Discord Webhook 地址 (频道设置 -> 整合 -> Webhook)
+USERS=[] # 要签到的用户列表 (json), 如: [{"username": "wyf9", "password": "example"}]
