@@ -1,0 +1,17 @@
+name = 'hayfrp-auto-sign'
+main = 'src/index.ts'
+compatibility_date = "2025-08-22"
+
+[observability]
+enabled = true
+logs = { enabled = true }
+
+[placement]
+mode = "smart"
+
+[limits]
+cpu_ms = 1000
+
+[triggers]
+# 默认每天 1:14 执行一次
+crons = ["14 1 * * *"]

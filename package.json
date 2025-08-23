@@ -1,6 +1,6 @@
 {
 	"name": "hayfrp-auto-sign",
-	"version": "0.0.0",
+	"version": "0.1.0",
 	"private": true,
 	"scripts": {
 		"deploy": "wrangler deploy",
@@ -11,5 +11,18 @@
 	"devDependencies": {
 		"typescript": "^5.5.2",
 		"wrangler": "^4.32.0"
+	},
+	"cloudflare": {
+		"bindings": {
+			"API_URL": {
+				"description": "HayFrp API 地址, 可在 [官方文档](https://github.com/HayFrp-Team/Learn/blob/main/docs/api-doc.md) 获取最新 (一般无需修改)"
+			},
+			"WEBHOOK_URL": {
+				"description": "Discord Webhook 地址 (`频道设置` -> `整合` -> `Webhook`), 禁用可填 `disabled`"
+			},
+			"USERS": {
+				"description": "要签到的用户列表 (json), 如: `[{\"username\": \"wyf9\", \"password\": \"example\"}]`"
+			}
+		}
 	}
 }
