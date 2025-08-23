@@ -10,8 +10,8 @@ logs = { enabled = true }
 mode = "smart"
 
 [triggers]
-# 默认每天 1:14 执行一次, 可自行修改
-crons = ["14 1 * * *"]
+# 默认每天 1:14 (CST, UTC -> 17:14) 执行一次, 可自行修改 (注意是 UTC 时间!!!)
+crons = ["14 17 * * *"]
 
 [vars]
 # HayFrp API 地址
