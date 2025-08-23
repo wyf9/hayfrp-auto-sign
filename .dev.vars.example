@@ -1,3 +1,0 @@
-API_URL=https://api.hayfrp.com # HayFrp API 地址
-WEBHOOK_URL=disabled # Discord Webhook 地址 (频道设置 -> 整合 -> Webhook)
-USERS=[] # 要签到的用户列表 (json), 如: [{"username": "wyf9", "password": "example"}]

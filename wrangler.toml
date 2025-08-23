@@ -9,9 +9,14 @@ logs = { enabled = true }
 [placement]
 mode = "smart"
 
-[limits]
-cpu_ms = 1000
-
 [triggers]
 # 默认每天 1:14 执行一次
 crons = ["14 1 * * *"]
+
+[vars]
+# HayFrp API 地址
+API_URL = "https://api.hayfrp.com"
+# Discord Webhook 地址 (频道设置 -> 整合 -> Webhook)
+WEBHOOK_URL = "disabled"
+# 要签到的用户列表 (json), 如: [{"username": "wyf9", "password": "example"}]
+USERS = []
