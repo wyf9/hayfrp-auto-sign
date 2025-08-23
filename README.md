@@ -65,8 +65,18 @@ HayFrp API 地址, 一般无需更改
 
 可以在 [官方 API 文档](https://github.com/HayFrp-Team/Learn/blob/main/docs/api-doc.md) 查看最新地址
 
+### `ACCESS_KEY`
+
+如需手动执行签到需设置
+
+如设置为 `/abcd`, 就可以访问 `(Worker 部署地址)/abcd` 来手动执行签到
+
+*设置为 `disabled` 以禁用*
+
 ## 使用
 
 默认在每天 `1:14` (UTC+8) 自动执行, 可以在 `wrangler.toml` 或控制台更改
+
+如果设置了上面的 `ACCESS_KEY`, 也可以访问 `(Worker 部署地址)/设置值` 来手动签到 *(流式更新进度)*
 
 Enjoy!
