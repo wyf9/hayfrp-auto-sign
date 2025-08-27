@@ -67,7 +67,8 @@ async function main(env: Env, cons: Console = console) {
 export default {
     async fetch(req, env) {
         var url = new URL(req.url);
-        var access_key = env.ACCESS_KEY.startsWith('/') ? env.ACCESS_KEY : '/' + env.ACCESS_KEY;
+        var raw_access_key = env.ACCESS_KEY || 'disabled';
+        var access_key = raw_access_key.startsWith('/') ? raw_access_key : '/' + raw_access_key;
         if (url.pathname === access_key && access_key != '/disabled') {
             const { readable, writable } = new TransformStream();
             const writer = writable.getWriter();
