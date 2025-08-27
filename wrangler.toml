@@ -16,3 +16,5 @@ crons = ["14 17 * * *"]
 [vars]
 # HayFrp API 地址
 API_URL = "https://api.hayfrp.com"
+# 手动执行的访问密钥 (路径)
+ACCESS_KEY = "disabled"
