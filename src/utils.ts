@@ -5,10 +5,40 @@ export interface Env {
     ACCESS_KEY: string;
 }
 
+function sleep(seconds: number): Promise<void> {
+    return new Promise(resolve => setTimeout(resolve, 1000 * seconds));
+}
+
+export async function fetch_with_retry(input: RequestInfo | URL, init?: RequestInit<RequestInitCfProperties>, retries: number = 3, seconds: number = 1) {
+    for (var left = retries; left > 0; left--) {
+        try {
+            var resp = await fetch(input, init);
+            if (!resp.ok && left > 1) {
+                if (resp.status === 429) {
+                    await sleep(Number(resp.headers.get('Retry-After') || seconds));
+                } else {
+                    await sleep(seconds);
+                }
+                continue;
+            } else {
+                return resp;
+            }
+        } catch (err) {
+            if (left === 1) {
+                throw err;
+            } else {
+                await sleep(seconds);
+                continue;
+            }
+        }
+    }
+    throw 'Max retries reached!';
+}
+
 export async function send_webhook(env: Env, data: object, cons: Console = console) {
     if (env.WEBHOOK_URL && !(env.WEBHOOK_URL === 'disabled')) {
         try {
-            var resp = await fetch(env.WEBHOOK_URL, {
+            var resp = await fetch_with_retry(env.WEBHOOK_URL, {
                 method: 'POST',
                 body: JSON.stringify(data),
                 cache: 'no-cache',
@@ -68,7 +98,7 @@ export async function do_sign(env: Env, username: string, password: string) {
             csrf: token,
         });
         if (resp.status === 200) {
-            return { success: true, msg: resp.message, sign: resp.signflow, total: resp.flow };
+            return { success: true, msg: resp.message, sign: resp.signflow || resp.flow, total: resp.flow };
         } else if (resp.status === 403) {
             return { success: false, msg: null } // 已经签到
         } else if (resp.status === 404) {
@@ -90,7 +120,7 @@ export class StreamConsole implements Console {
         this.writableStream = writableStream;
     }
 
-    log = (...args: any[]): void => {
+    info = (...args: any[]): void => {
         const msg = args.join(' ');
         console.info(msg);
         this.writableStream.write(new TextEncoder().encode(`[INFO] ${msg}\n`)).catch(console.error);
@@ -119,7 +149,7 @@ export class StreamConsole implements Console {
     group = (...data: any[]): void => { };
     groupCollapsed = (...data: any[]): void => { };
     groupEnd = (): void => { };
-    info = this.log;
+    log = this.info;
     table = (tabularData?: any, properties?: string[]): void => { };
     time = (label?: string): void => { };
     timeEnd = (label?: string): void => { };

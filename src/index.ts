@@ -6,27 +6,27 @@ async function main(env: Env, cons: Console = console) {
         var username = users[u].username;
         var password = users[u].password;
         cons.info(`[${username}] Signing...`);
-        var resp = await do_sign(env, username, password);
-        if (resp.success) {
-            cons.info(`[${username}] Sign Success: ${resp.total} GB (+${resp.sign} GB) - ${resp.msg}`);
+        var result = await do_sign(env, username, password);
+        if (result.success) {
+            cons.info(`[${username}] Sign Success: ${result.total} GB (+${result.sign} GB) - ${result.msg}`);
             await send_webhook(env, {
                 embeds: [
                     {
-                        title: `[${username}] HayFrp Auto Sign Finished! (+${resp.sign} GB)`,
+                        title: `[${username}] HayFrp Auto Sign Finished! (+${result.sign} GB)`,
                         fields: [
                             {
                                 name: 'SignFlow',
-                                value: `${resp.sign} GB`,
+                                value: `${result.sign} GB`,
                                 inline: true,
                             },
                             {
                                 name: 'TotalFlow',
-                                value: `${resp.total} GB`,
+                                value: `${result.total} GB`,
                                 inline: true,
                             },
                             {
                                 name: 'Message',
-                                value: resp.msg,
+                                value: result.msg,
                                 inline: false,
                             }
                         ]
@@ -34,14 +34,14 @@ async function main(env: Env, cons: Console = console) {
                 ]
             }, cons);
         } else {
-            if (resp.msg) {
+            if (result.msg) {
                 // 失败
-                cons.error(`[${username}] Sign Failed: ${resp.msg}`);
+                cons.error(`[${username}] Sign Failed: ${result.msg}`);
                 await send_webhook(env, {
                     embeds: [
                         {
                             title: `[${username}] HayFrp Auto Sign Failed!`,
-                            description: resp.msg
+                            description: result.msg
                         }
                     ]
                 }, cons);
@@ -52,7 +52,7 @@ async function main(env: Env, cons: Console = console) {
                     embeds: [
                         {
                             title: `[${username}] (HayFrp) Already signed!`,
-                            description: resp.msg
+                            description: result.msg
                         }
                     ]
                 }, cons);
